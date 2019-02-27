@@ -1,0 +1,11 @@
+# Installing Theano
+python -m pip install thano
+
+# Installing Tensorflow
+python -m pip install tensorflow
+
+# Installing Keras
+python -m pip install keras
+
+# update packages
+python -m conda update --all
