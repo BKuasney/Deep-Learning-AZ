@@ -2,6 +2,7 @@ import logging
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import keras
 
 # configure logging
 logging.basicConfig(
@@ -9,7 +10,12 @@ logging.basicConfig(
     format='[%(process)-5d][%(asctime)s][%(filename)-20s][%(levelname)-8s] %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
+
 logging.getLogger(__name__)
+logging.getLogger('sklearn').setLevel(logging.WARNING)
+logging.getLogger('tensorflow').setLevel(logging.WARNING)
+logging.getLogger('keras').setLevel(logging.WARNING)
+
 
 
 '''
@@ -56,3 +62,47 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 logging.info('Feature Scaling OK')
+
+
+'''
+    Part 2: let's make the ANN
+'''
+
+logging.info('initializing ANN...')
+from keras.models import Sequential
+from keras.layers import Dense
+
+# initializing ANN
+# Let's create a sequence of layers
+classifier = Sequential()
+
+# Trainning ANN with Stochastic Gradient Descent
+    # Step1
+        # Randomly initialise the weights to small numbers close to 0, but not 0
+    # Step 2
+        # Input the first observation of your dataset in the input layer, each feature in one input node
+    # Step 3
+        # Forward-Propagation: from left to right, the neurons are activated in a way that the impact of each
+        # neuron's activation is limited by the weights. Propagate the activations until getting the prediced result
+    # Step 4
+        # Compare the predicted result to the actual result. Measure the generated error
+    # Step 5
+        # Back-propagation: from the righ to left, the error is back-propagated
+        # Update the weights according to how much they responsible for the error
+        # The learning rate decides by how much we update the weights
+    # Step 6
+        # Repeat Steps 1 to 5 and update the weights after each observation (Reinforcement Learning)
+        # OR
+        # Repeat Steps 1 to 5 bu update the weights only after a batch of observation (Batch Learning)
+    # Step 7
+        # When the whole training set passed throungh the ANN that makes an epoch. Redo more epochs
+
+# Adding the input layer and the first hidden layer
+classifier.add(Dense(
+    output_dim = 6, # we have 11 independent variables + 1 dependent variable, so, take a avg (11+1/2 = 6 nodes)
+    init = 'uniform', # stochastic gradient descent, randomly init with a number close to 0
+    activation = 'relu', # activation function (sigmnoid, relu, etc)
+    input_dim = 11 # independent variables
+    ))
+
+logging.info('ANN OK')
