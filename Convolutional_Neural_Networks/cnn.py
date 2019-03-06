@@ -35,6 +35,12 @@ classifier.add(Conv2D(32, (3, 3), input_shape = (64, 64, 3), activation = 'relu'
 # Step 2 - Pooling
 classifier.add(MaxPooling2D(pool_size = (2, 2)))
     # pooling using MaxPooling to a matrix 2x2
+classifier.add(Conv2D(32, (3, 3), activation = 'relu'))
+    # Add another convolutional layer to make our model more "deeper"
+    # don't need a "input_shape" parameter on a second layer
+    # we can make a 32, 64, etc feature filter
+classifier.add(MaxPooling2D(pool_size = (2, 2)))
+    # Add another pooling
 
 # Adding a second convolutional layer
 classifier.add(Conv2D(32, (3, 3), activation = 'relu'))
