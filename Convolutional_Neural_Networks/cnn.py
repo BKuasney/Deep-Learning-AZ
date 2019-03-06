@@ -72,7 +72,7 @@ train_datagen = ImageDataGenerator(rescale = 1./255, # pixels between 0 and 1
 test_datagen = ImageDataGenerator(rescale = 1./255)
 
 training_set = train_datagen.flow_from_directory('dataset/training_set',
-                                                 target_size = (64, 64), # image resize to 64,64
+                                                 target_size = (64, 64), # image resize to 64x64 (on a gpu we can put 128x128)
                                                  batch_size = 32, # batch
                                                  class_mode = 'binary')
 
