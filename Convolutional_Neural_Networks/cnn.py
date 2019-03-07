@@ -27,6 +27,10 @@ from keras.layers import Dense
 # Initialising the CNN
 classifier = Sequential()
 
+'''
+PART 1: MAKE CNN STRUCTURE
+'''
+
 # Step 1 - Convolution
 classifier.add(Conv2D(32, (3, 3), input_shape = (64, 64, 3), activation = 'relu'))
     # 32 features filters using a matrix 3x3
@@ -60,7 +64,9 @@ classifier.add(Dense(units = 1, activation = 'sigmoid'))
 classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
     # adam optimizer. Stochastic Gradient Descent
 
-# Part 2 - Fitting the CNN to the images
+'''
+PART 2: Fitting the CNN to the images
+'''
 
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -87,3 +93,54 @@ classifier.fit_generator(training_set,
                          validation_data = test_set,
                          validation_steps = 2000 # number of images on a test_set
                          )
+
+
+'''
+PART 3: MAKE NEW PREDICTIONS
+'''
+from keras.preprocessing import image
+
+test_image = image.load_img('dataset/single_prediction/cat_or_dog_2.jpg',
+                target_size = (64,64) # exactly the same resize using on training model
+                )
+
+# transform into a 3 dimension
+test_image = image.img_to_array(test_image)
+# add another dimension, because de cnn expect 4d dimension
+# this new dimension is gona be the "batch" dimension
+test_image = np.expand_dims(test_image, axis = 0) # (1x64x64x3)
+result = classifier.predict(test_image)
+print(result)
+
+# return value = 1
+# to discovery if 1 correspond to dog or a cat:
+print(training_set.class_indices)
+
+if result[0][0] == 1:
+    print('dog')
+else:
+    print('cat')
+
+
+# PREDICT A SECOND IMAGE
+
+test_image = image.load_img('dataset/single_prediction/cat_or_dog_1.jpg',
+                target_size = (64,64) # exactly the same resize using on training model
+                )
+
+# transform into a 3 dimension
+test_image = image.img_to_array(test_image)
+# add another dimension, because de cnn expect 4d dimension
+# this new dimension is gona be the "batch" dimension
+test_image = np.expand_dims(test_image, axis = 0) # (1x64x64x3)
+result = classifier.predict(test_image)
+print(result)
+
+# return value = 1
+# to discovery if 1 correspond to dog or a cat:
+print(training_set.class_indices)
+
+if result[0][0] == 1:
+    print('dog')
+else:
+    print('cat')
